@@ -1,7 +1,7 @@
 import { Component, assertInInjectionContext } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute , Router } from '@angular/router';
 import { DulieuService } from '../dulieu.service';
 import { IDuAn } from '../idu-an';
 import { ITask } from '../itask';
@@ -19,7 +19,7 @@ export class TaskSuaComponent {
   data:ITask=<ITask>{};
   listNhanVien:INhanVien[]=[];
   listDuAn:IDuAn[]=[];
-  constructor(private d:DulieuService , private route:ActivatedRoute){}
+  constructor(private d:DulieuService , private route:ActivatedRoute , private router:Router){}
   ngOnInit():void{
     this.id = Number(this.route.snapshot.paramMap.get('id'));
     this.d.lay1Task(this.id).subscribe(ta=>{
@@ -37,6 +37,7 @@ export class TaskSuaComponent {
     this.d.suaTask(this.data).subscribe(result=>{
       console.log(result,);
       alert('Sửa thành công')
+      this.router.navigate(['/task'])
     })
   }
 }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute , Router} from '@angular/router';
 import { DulieuService } from '../dulieu.service';
 import { INhanVien } from '../inhan-vien';
 
@@ -15,7 +15,7 @@ import { INhanVien } from '../inhan-vien';
 export class NvSuaComponent {
   id:number=0;
   data:INhanVien = <INhanVien>{};
-  constructor(private d :DulieuService , private route : ActivatedRoute){}
+  constructor(private d :DulieuService , private route : ActivatedRoute , private router:Router){}
   ngOnInit():void{
     this.id = Number (this.route.snapshot.paramMap.get('id'));
     this.d.lay1NhanVien(this.id).subscribe(nv=>{
@@ -27,6 +27,7 @@ export class NvSuaComponent {
     this.d.suaNhanVien(this.data).subscribe(result=>{
       console.log("result",result);
       alert('Sửa thành công ')
+      this.router.navigate(['/nhan_vien'])
     })
   }
 }

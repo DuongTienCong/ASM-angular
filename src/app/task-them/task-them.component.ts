@@ -5,6 +5,7 @@ import { DulieuService } from '../dulieu.service';
 import { ITask } from '../itask';
 import { INhanVien } from '../inhan-vien';
 import { IDuAn } from '../idu-an';
+import { ActivatedRoute , Router } from '@angular/router';
 
 @Component({
   selector: 'app-task-them',
@@ -16,7 +17,7 @@ import { IDuAn } from '../idu-an';
 export class TaskThemComponent {
   listNhanVien:INhanVien[]=[]
   listDuAn:IDuAn[]=[]
-  constructor(private d:DulieuService){}
+  constructor(private d:DulieuService , private route:ActivatedRoute , private router:Router){}
   ngOnInit():void{
       this.d.layNhanVien().subscribe(data=>{
         this.listNhanVien=data as INhanVien[];
@@ -29,6 +30,7 @@ export class TaskThemComponent {
     this.d.themTask(ta).subscribe(result=>{
       console.log(ta,result,);
       alert('Thêm thành công')
+      this.router.navigate(['/task'])
     })
   }
 

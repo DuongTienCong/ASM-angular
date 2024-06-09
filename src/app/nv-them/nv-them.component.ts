@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DulieuService } from '../dulieu.service';
 import { INhanVien } from '../inhan-vien';
+import { ActivatedRoute , Router } from '@angular/router';
 
 @Component({
   selector: 'app-nv-them',
@@ -12,12 +13,12 @@ import { INhanVien } from '../inhan-vien';
   styleUrl: './nv-them.component.css'
 })
 export class NvThemComponent {
-  constructor(private d:DulieuService){}
+  constructor(private d:DulieuService , private route:ActivatedRoute , private router:Router){}
   xuly(nv:INhanVien){
     this.d.themNhanVien(nv).subscribe(data=>{
       console.log(nv , data);
       alert('Thêm thành công')
-      // chuyển đến danh sách nhân viên
+      this.router.navigate(['/nhan_vien'])
     })
   }
 

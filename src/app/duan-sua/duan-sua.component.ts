@@ -21,7 +21,7 @@ export class DuanSuaComponent {
   ngOnInit():void{
     this.id = Number(this.route.snapshot.paramMap.get('id'));
     this.d.layNhanVien().subscribe(data=>{
-      this.listNhanVien=data as INhanVien[];
+      this.listNhanVien = data as INhanVien[];
     });
     this.d.lay1DuAn(this.id).subscribe(da=>{
       console.log("da=",da);
