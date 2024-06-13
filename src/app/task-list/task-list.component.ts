@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { ITask } from '../itask';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute , Router } from '@angular/router';
+import { DulieuService } from '../dulieu.service';
 
 @Component({
   selector: 'app-task-list',
@@ -13,12 +14,13 @@ import { ActivatedRoute , Router } from '@angular/router';
 })
 export class TaskListComponent {
   list_task:ITask[]=[]
-  constructor(private route:ActivatedRoute , private router:Router){}
+  constructor(private route:ActivatedRoute , private router:Router , private d:DulieuService){}
   ngOnInit():void{
-    fetch(`http://localhost:3000/task`)
-    .then (res=>res.json())
-    .then(data =>{
-      this.list_task = data;
+   this.layTask();
+  }
+  layTask():void{
+    this.d.layTask().subscribe((data:any)=>{
+      this.list_task = data
     })
   }
   themTask():void{
@@ -29,21 +31,9 @@ export class TaskListComponent {
   }
   xoaTask(id: number): void {
     if (confirm('Bạn có chắc chắn muốn xóa dự án này?')) {
-      fetch(`http://localhost:3000/du_an/${id}`, {
-        method: 'DELETE',
-      })
-      .then(response => {
-        if (response.ok) {
-          alert('Xóa thành công');
-          this.list_task = this.list_task.filter(da => da.id !== id);
-        } else {
-          alert('Xóa thất bại');
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        alert('Có lỗi xảy ra khi xóa dự án');
-      });
+     this.d.xoaTask(id).subscribe(()=>{
+      this.router.navigate(['/task'])
+     })
     }
   }
 

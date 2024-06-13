@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { IDuAn } from '../idu-an';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { DulieuService } from '../dulieu.service';
 
 @Component({
   selector: 'app-duan-list',
@@ -14,16 +15,16 @@ import { FormsModule } from '@angular/forms';
 export class DuanListComponent implements OnInit {
   list_du_an: IDuAn[] = [];
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(private route: ActivatedRoute, private router: Router , private d:DulieuService) {}
 
   ngOnInit(): void {
-    fetch('http://localhost:3000/du_an')
-      .then(res => res.json())
-      .then(data => {
-        this.list_du_an = data;
-      });
+    this.layDuAn();
   }
-
+  layDuAn():void{
+    this.d.layDuAn().subscribe((data:any)=>{
+        this.list_du_an = data
+    })
+  }
   themDuAn(): void {
     this.router.navigate(['/du_an/them']);
   }
@@ -34,21 +35,8 @@ export class DuanListComponent implements OnInit {
 
   xoaDuAn(id: number): void {
     if (confirm('Bạn có chắc chắn muốn xóa dự án này?')) {
-      fetch(`http://localhost:3000/du_an/${id}`, {
-        method: 'DELETE',
+      this.d.xoaDuAn(id).subscribe(()=>{
       })
-      .then(response => {
-        if (response.ok) {
-          alert('Xóa thành công');
-          this.list_du_an = this.list_du_an.filter(da => da.id !== id);
-        } else {
-          alert('Xóa thất bại');
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        alert('Có lỗi xảy ra khi xóa dự án');
-      });
-    }
+    } 
   }
 }
